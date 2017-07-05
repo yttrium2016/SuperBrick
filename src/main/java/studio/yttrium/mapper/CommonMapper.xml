@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="studio.yttrium.dao.CommonDao">
+  <update id="creatTable" parameterType="java.util.Map" statementType="STATEMENT">
+     create table if not exists ${tablename}
+    <foreach collection="keys" item="k" index="index" open="(" separator="," close=");">
+      ${k} varchar(30) not null
+    </foreach>
+  </update>
+
+  <insert id="InsertData" parameterType="java.util.Map" statementType="STATEMENT">
+    insert into ${tablename}
+    <foreach collection="keys" item="k" index="index" open="(" separator="," close=")">
+      ${k}
+    </foreach>
+    values
+    <foreach collection="keys" item="k" index="index" open="(" separator="," close=")">
+      '${params[k]}'
+    </foreach>
+  </insert>
+
+  <select id="getList" parameterType="java.util.Map" resultType="java.util.HashMap">
+    select * from  ${entityName} limit ${pageIndex},#{pageSize}
+  </select>
+
+  <select id="getCount" resultType="java.lang.Long">
+    SELECT COUNT(*) FROM pay_o_tb
+  </select>
+
+  <select id="getCountByV" parameterType="java.util.Map" resultType="java.lang.Long">
+    SELECT COUNT(*) FROM  ${entityName}
+  </select>
+</mapper>
